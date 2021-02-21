@@ -34,13 +34,13 @@ class ActorController < ApplicationController
         WHERE ma.actor_id = :id
       )
       SELECT COUNT(a.id) AS co_actor_count, a.id, a.first_name, a.last_name
-        FROM actors a
-        JOIN movies_actors ma ON ma.actor_id = a.id
-        WHERE ma.movie_id IN (SELECT id FROM movies_for_actor)
-        AND a.id <> :id
-        GROUP BY a.id
-        ORDER BY co_actor_count DESC
-        LIMIT 5;
+      FROM actors a
+      JOIN movies_actors ma ON ma.actor_id = a.id
+      WHERE ma.movie_id IN (SELECT id FROM movies_for_actor)
+      AND a.id <> :id
+      GROUP BY a.id
+      ORDER BY co_actor_count DESC
+      LIMIT 5;
     SQL
     query = ActiveRecord::Base.sanitize_sql([ sql, id: actor_id])
     ActiveRecord::Base.connection.execute(query)
